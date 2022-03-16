@@ -1,18 +1,23 @@
-//TODO: tutorial about mongoose
+const mongoose = require('mongoose');
 
-//TODO: Schema for user
-//example not on topic:
-// const PostSchema = mongoose.Schema({
-// 	title: {
-// 		type: String,
-// 		required: true,
-// 	},
-// 	description: {
-// 		type: String,
-// 		required: true,
-// 	},
-// 	date: {
-// 		type: Date,
-// 		default: Date.now(),
-// 	},
-// });
+const userRegisterSchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
+		min: 6,
+		max: 32,
+	},
+	email: {
+		type: String,
+		required: true,
+		max: 128,
+	},
+	password: {
+		type: String,
+		required: true,
+		min: 6,
+		max: 128,
+	},
+});
+
+module.exports = mongoose.model('User', userRegisterSchema);
