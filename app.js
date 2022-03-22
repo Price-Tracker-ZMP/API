@@ -1,26 +1,28 @@
+require('dotenv').config({ path: './config.env' });
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
+const cors = require('cors');
 
 const authRoute = require('./routes/auth.js');
 const User = require('./models/User.js');
-//TODO: take short tutorial about MONGOOSE
+
 //TODO: remember about turn on CORS
 //TODO: main, test routes to do - for testing main connection with database and testing with Postman
 
 //MIDDLEWARES!!!
 app.use(express.json());
+app.use(cors());
 app.use('/auth', authRoute);
 
 //ROUTES
-app.get('/all', async (request, response) => {
+app.get('/', async (request, response) => {
 	try {
 		const users = await User.find();
-		response.json(users);
+		response.send(users);
 	} catch (err) {
-		response.json({ message: err });
+		// response.json({ message: err });
+		response.json('Error');
 	}
 });
 
@@ -31,6 +33,7 @@ mongoose.connect(process.env.DB_CONNECTION, () => {
 
 //TODO: not-static port listening
 //LISTENING
-app.listen(5000, () => {
-	console.log('Server is running');
+const PORT = process.env.PORT || 5001;
+app.listen(process.env.PORT, () => {
+	console.log(`Server is running at port ${process.env.PORT}`);
 });

@@ -5,16 +5,34 @@ const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validation');
 const jwt = require('jsonwebtoken');
 
+// /auth/register
 router.post('/register', async (request, response) => {
+	console.log('---------------------------------');
+	console.log('Got request.body:', request.body);
 	//validacja requestu
 	const { error } = registerValidation(request.body);
-	if (error) return response.status(400).send(error.details[0].message);
+	if (error) {
+		console.log('REQUEST DATA ERROR');
+		console.log(error.details[0].message);
+		// return response.status(412).send(error.details[0].message);
+		return response
+			.status(412)
+			.json({ errorMessage: error.details[0].message });
+	}
 
-	//validacja "czy tego emaila juz nie ma"
+	// validacja "czy tego emaila juz nie ma"
 	const emailExist = await User.findOne({
 		email: request.body.email,
 	});
-	if (emailExist) return response.status(400).send('Email already exist');
+	if (emailExist) {
+		console.log('EMAIL ALREADY EXIST');
+		// return response.status(400).send('Email already exist');
+		return (
+			response
+				// .status(404)
+				.json({ status: false, errorMessage: 'Email already exist' })
+		);
+	}
 
 	//Hashowanie hasła
 	const salt = await bcrypt.genSalt(10);
@@ -22,7 +40,6 @@ router.post('/register', async (request, response) => {
 
 	//tworzenie user'a do zapisania
 	const user = new User({
-		name: request.body.name,
 		email: request.body.email,
 		password: hashedPassword,
 	});
@@ -30,33 +47,50 @@ router.post('/register', async (request, response) => {
 	//zapisanie, bądz złapanie błędu
 	try {
 		const savedUser = await user.save();
-		response.json({ id: user._id });
+		console.log('Saved user: ', savedUser);
+		response.json({ message: 'User created', email: user.email, id: user._id });
 	} catch (err) {
+		console.log(err);
 		response.status(400).send(err);
 	}
+	console.log('REGISTER COMPLETED');
 });
 
+// /auth/login
 router.post('/login', async (request, response) => {
+	console.log(request.body);
 	//validacja danych wejsciowych
 	const { error } = loginValidation(request.body);
-	if (error) return response.status(400).send(error.details[0].message);
+	if (error) {
+		console.log('REQUEST DATA ERROR');
+		return response
+			.status(400)
+			.json({ errorMessage: error.details[0].message });
+	}
 
 	//sprawdzenie, czy podany email znajduje się w bazie - wyszukujemy usera o takim emailu
 	const user = await User.findOne({
 		email: request.body.email,
 	});
-	if (!user) return response.status(400), send('Email is incorrect');
+	if (!user) {
+		console.log('EMAIL DOESNT EXIST IN DB');
+		return response.status(400), send('Email is incorrect');
+	}
 
 	//porównanie hasła usytkownika z podanym haslem
 	const validPassword = await bcrypt.compare(
 		request.body.password,
 		user.password
 	);
-	if (!validPassword) return response.status(400).send('Password is incorrect');
+	if (!validPassword) {
+		console.log('PASSWORD IS A SHIT');
+		return response.status(400).send('Password is incorrect');
+	}
 
 	//wystawienie tokenu
 	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-	response.header('auth-token', token).send(token);
+	response.header('auth-token', token).json({ user: user.email, token: token });
+	// .send(token);
 });
 
 module.exports = router;
