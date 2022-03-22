@@ -74,7 +74,7 @@ router.post('/login', async (request, response) => {
 	});
 	if (!user) {
 		console.log('EMAIL DOESNT EXIST IN DB');
-		return response.status(400), send('Email is incorrect');
+		return response.status(400).json({ errorMessage: "Email doesn't exist" });
 	}
 
 	//porównanie hasła usytkownika z podanym haslem
@@ -84,7 +84,7 @@ router.post('/login', async (request, response) => {
 	);
 	if (!validPassword) {
 		console.log('PASSWORD IS A SHIT');
-		return response.status(400).send('Password is incorrect');
+		return response.status(400).json({ errorMessage: 'Wrong Password' });
 	}
 
 	//wystawienie tokenu
