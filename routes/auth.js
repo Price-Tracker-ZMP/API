@@ -1,9 +1,11 @@
 const router = require('express').Router();
-//TODO: checking what express.Router() method makes
+//TODO: checking what express.Router() method makes - exactly
 const User = require('../models/User.js');
 const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require('../validation');
 const jwt = require('jsonwebtoken');
+
+const responseStandard = require('../controller.js');
 
 // /auth/register
 router.post('/register', async (request, response) => {
@@ -14,10 +16,10 @@ router.post('/register', async (request, response) => {
 	if (error) {
 		console.log('REQUEST DATA ERROR');
 		console.log(error.details[0].message);
-		// return response.status(412).send(error.details[0].message);
-		return response
-			.status(412)
-			.json({ errorMessage: error.details[0].message });
+		// return response
+		// 	.status(412)
+		// 	.json({ errorMessage: error.details[0].message });
+		return response.json(responseStandard(false, error.details[0].message));
 	}
 
 	// validacja "czy tego emaila juz nie ma"
@@ -30,7 +32,8 @@ router.post('/register', async (request, response) => {
 		return (
 			response
 				// .status(404)
-				.json({ status: false, errorMessage: 'Email already exist' })
+				// .json({ status: false, errorMessage: 'Email already exist' })
+				.json(responseStandard(false, 'Email already exist'))
 		);
 	}
 
@@ -48,10 +51,18 @@ router.post('/register', async (request, response) => {
 	try {
 		const savedUser = await user.save();
 		console.log('Saved user: ', savedUser);
-		response.json({ message: 'User created', email: user.email, id: user._id });
+		// response.json({ message: 'User created', email: user.email, id: user._id });
+		response.json(
+			responseStandard(true, {
+				message: 'Users created',
+				email: user.email,
+				id: user.id,
+			})
+		);
 	} catch (err) {
 		console.log(err);
-		response.status(400).send(err);
+		// response.status(400).send(err);
+		response.json(responseStandard(false, err));
 	}
 	console.log('REGISTER COMPLETED');
 });
@@ -63,9 +74,12 @@ router.post('/login', async (request, response) => {
 	const { error } = loginValidation(request.body);
 	if (error) {
 		console.log('REQUEST DATA ERROR');
-		return response
-			.status(400)
-			.json({ errorMessage: error.details[0].message });
+		return (
+			response
+				.status(400)
+				// .json({ errorMessage: error.details[0].message });
+				.json(responseStandard(false, error.details[0].message))
+		);
 	}
 
 	//sprawdzenie, czy podany email znajduje się w bazie - wyszukujemy usera o takim emailu
@@ -74,7 +88,8 @@ router.post('/login', async (request, response) => {
 	});
 	if (!user) {
 		console.log('EMAIL DOESNT EXIST IN DB');
-		return response.status(400).json({ errorMessage: "Email doesn't exist" });
+		// return response.status(400).json({ errorMessage: "Email doesn't exist" });
+		return response.json(responseStandard(false, "User doesn't exist"));
 	}
 
 	//porównanie hasła usytkownika z podanym haslem
@@ -84,13 +99,18 @@ router.post('/login', async (request, response) => {
 	);
 	if (!validPassword) {
 		console.log('PASSWORD IS A SHIT');
-		return response.status(400).json({ errorMessage: 'Wrong Password' });
+		// return response.status(400).json({ errorMessage: 'Wrong Password' });
+		return response.json(responseStandard(false, 'Wrong Password'));
 	}
 
 	//wystawienie tokenu
 	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-	response.header('auth-token', token).json({ user: user.email, token: token });
-	// .send(token);
+	// response.header('auth-token', token).json({ user: user.email, token: token });
+	response
+		.header('auth-token', token)
+		.json(
+			responseStandard(true, { token: token, id: user.id, email: user.email })
+		);
 });
 
 module.exports = router;

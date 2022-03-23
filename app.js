@@ -7,6 +7,8 @@ const cors = require('cors');
 const authRoute = require('./routes/auth.js');
 const User = require('./models/User.js');
 
+const responseStandard = require('./controller.js');
+
 //TODO: remember about turn on CORS
 //TODO: main, test routes to do - for testing main connection with database and testing with Postman
 
@@ -19,10 +21,12 @@ app.use('/auth', authRoute);
 app.get('/', async (request, response) => {
 	try {
 		const users = await User.find();
-		response.send(users);
+		response.json(responseStandard(true, users));
 	} catch (err) {
 		// response.json({ message: err });
-		response.json('Error');
+		response.json(
+			responseStandard(false, 'Something hit the fan in try-catch block')
+		);
 	}
 });
 
