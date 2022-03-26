@@ -1,4 +1,4 @@
-const responseAuth = (statusCode, message, content = {}) => {
+const responseAuth = (statusCode, message, content) => {
 	const response = {
 		status: statusCode,
 		message: message,
