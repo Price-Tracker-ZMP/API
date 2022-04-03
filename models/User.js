@@ -11,6 +11,9 @@ const UserSchema = mongoose.Schema({
 		required: true,
 		minlength: 5,
 	},
+	gamesList: {
+		type: [],
+	},
 });
 
 const User = mongoose.model('User', UserSchema);

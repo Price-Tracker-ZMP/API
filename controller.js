@@ -1,10 +1,10 @@
-const responseAuth = (statusCode, message, content) => {
+const responseStandard = (status, message, content) => {
 	const response = {
-		status: statusCode,
+		status: status,
 		message: message,
 		content: content,
 	};
 	return response;
 };
 
-module.exports = responseAuth;
+module.exports = responseStandard;
