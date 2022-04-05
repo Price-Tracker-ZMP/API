@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdfpagemode=FullScreen,
+    }
+
+\title{ZMP\textunderscore Obserwowator cen produktów w sklepie  internetowym STEAM}
+
+\author{
+Piotr Tekieli,\\
+Jan Kwiatkowski,\\
+Mariusz Skuza,\\
+Szymon Bacański
+}
+
+\date{Kwiecień 2022}
+
+\begin{document}
+\maketitle
+
+\section{Opis funkcjonalny systemu}
+Serwis internetowy zostanie wykonany w oparciu o specyfikację projektową. Projektowany od początku serwis musi być elastyczny, tj. powinien umożliwić rozwój istniejących i dodawanie nowych funkcjonalności bez konieczności przebudowy znacznych części kodu lub architektury.
+\\
+Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklepie internetowym STEAM. Serwis będzie się składał z aplikacji WEB, Mobile, Desktop, które będą łączyć się do stworzonym API.
+
+    \subsection{Opis funkcjonalny API}
+        Api będze pełniło funkcję głównego węzła komunikacyjnego dla systemu poprzez:
+        \begin{enumerate}
+            \item Wysyłanie i odbieranie informacji do innych aplikacji odnoście uzytkowników jak i przypisanych do konta informacji
+            \item Prowadzenie bazy danych z informacjami odnośnie kont i gier
+            \item Aktualizacja danych z sklepu STEAM 
+        \end{enumerate}
+        API ma w sposób dostępny i szybki umożliwić innym aplikacą na dostep do informacji wiązanymi z treścią serwisu. 
+        
+    \subsection{Opis funkcjonalny Web}
+         Witryna internetowa wyposażona w narzędzia ułatwiające nawigację i orientację w zawartości serwisu. Główną jej funkcją będze kontakt z użytkownikam czyli umożliwienie dostepu do informacji
+         serwisu i czytelne przedstawienie ich.
+         \\
+         Według wstępnych założeń witryna zawierać będzie:
+        \begin{enumerate}
+            \item Strona logowania/rejestracji
+            \item Wyszukiwarkę
+            \item Odnośnik do dodania gry do obserwowanych
+            \item Wgląd do historji ceny obserwowanego produktu
+        \end{enumerate}
+        
+        Dopuszcza się modyfikację tej struktury na etapie budowy innych elemętów serwisu.
+        
+    \subsection{Opis funkcjonalny Desktop}
+    
+        \begin{enumerate}
+            \item Strona logowania/rejestracji
+            \item Wyszukiwarkę
+            \item Dodanie gry do obserwowanych
+            \item Usuwanie z obserwacji
+            \item Wgląd do historji ceny obserwowanego produktu porzez diagram liniowy
+            \item Automatyczne logowanie
+        \end{enumerate}
+    \subsection{Opis funkcjonalny Mobile}
+            \begin{enumerate}
+            \item Strona logowania/rejestracji
+            \item Wyszukiwarkę
+            \item Dodanie gry do obserwowanych
+            \item Usuwanie z obserwacji
+            \item Wgląd do historji ceny obserwowanego produktu porzez diagram liniowy
+            \item Automatyczne logowanie
+        \end{enumerate}
+
+\section{Streszczenie opisu technologicznego dla}
+    \subsection{API}
+       
+        
+    \subsection{Web}
+        
+        
+    \subsection{Desktop}
+    
+    \subsection{Mobile}
+    
+
+\section{Streszczenie wzorców projektowych}
+    \subsection{API}
+       
+        
+    \subsection{Web}
+        
+        
+    \subsection{Desktop}
+    
+    \subsection{Mobile}
+
+
+
+
+\section{Instrukcję lokalnego i zdalnego uruchomienia systemu}
+    \subsection{API}
+        \subsubsection{Postawienie aplikacji lokalnie}
+        \subsubsection{Postawienie aplikacji zdalnie}
+        \subsubsection{Instrukcja uruchomienia testów}
+    \subsection{Web}
+        \subsubsection{Postawienie aplikacji lokalnie}
+        \subsubsection{Postawienie aplikacji zdalnie}
+        \subsubsection{Instrukcja uruchomienia testów}
+    \subsection{Desktop}
+        \subsubsection{Postawienie aplikacji lokalnie}
+        \subsubsection{Postawienie aplikacji zdalnie}
+        \subsubsection{Instrukcja uruchomienia testów}
+    \subsection{Mobile}
+        \subsubsection{Postawienie aplikacji lokalnie}
+        \subsubsection{Postawienie aplikacji zdalnie}
+        \subsubsection{Instrukcja uruchomienia testów}
+
+
+
+\end{document}
