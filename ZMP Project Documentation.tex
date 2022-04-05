@@ -4,6 +4,9 @@
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage[rightcaption]{sidecap}
+\usepackage{wrapfig}
 
 \hypersetup{
     colorlinks=true,
@@ -52,11 +55,11 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
             \item Odnośnik do dodania gry do obserwowanych
             \item Wgląd do historji ceny obserwowanego produktu
         \end{enumerate}
-        
         Dopuszcza się modyfikację tej struktury na etapie budowy innych elemętów serwisu.
         
     \subsection{Opis funkcjonalny Desktop}
-    
+        Aplikacja na komputer pozwalajaca kożystać z serisu.\\
+        Według wstępnych założeń Aplikacja zawierać będzie:
         \begin{enumerate}
             \item Strona logowania/rejestracji
             \item Wyszukiwarkę
@@ -65,7 +68,11 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
             \item Wgląd do historji ceny obserwowanego produktu porzez diagram liniowy
             \item Automatyczne logowanie
         \end{enumerate}
+        Dopuszcza się modyfikację tej struktury na etapie budowy innych elemętów serwisu.
+        
     \subsection{Opis funkcjonalny Mobile}
+        Aplikacja mobilna na androida pozwalajaca kożystać z serisu.\\
+        Według wstępnych założeń Aplikacja zawierać będzie:
             \begin{enumerate}
             \item Strona logowania/rejestracji
             \item Wyszukiwarkę
@@ -74,18 +81,22 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
             \item Wgląd do historji ceny obserwowanego produktu porzez diagram liniowy
             \item Automatyczne logowanie
         \end{enumerate}
+        Dopuszcza się modyfikację tej struktury na etapie budowy innych elemętów serwisu.
 
-\section{Streszczenie opisu technologicznego dla}
+\section{Wykorzystywane technologie}
     \subsection{API}
-       
-        
+    \begin{itemize}
+            \item Node.js\\
+            Wieloplatformowe oppensorce środowisko do tworzenia aplikacji typu server-side napisanych w języku JavaScript.
+            \item MongoDB\\
+             Otwarty, nierelacyjny system zarządzania bazą danych napisany w języku C++. Charakteryzuje się brakiem ściśle zdefiniowanej struktury obsługiwanych baz danych. Zamiast tego dane składowane są jako dokumenty w stylu JSON.
+             \end{itemize}
     \subsection{Web}
         
         
     \subsection{Desktop}
     
     \subsection{Mobile}
-    
 
 \section{Streszczenie wzorców projektowych}
     \subsection{API}
@@ -104,21 +115,57 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
 \section{Instrukcję lokalnego i zdalnego uruchomienia systemu}
     \subsection{API}
         \subsubsection{Postawienie aplikacji lokalnie}
+        
         \subsubsection{Postawienie aplikacji zdalnie}
+        
         \subsubsection{Instrukcja uruchomienia testów}
+        
     \subsection{Web}
         \subsubsection{Postawienie aplikacji lokalnie}
+        
         \subsubsection{Postawienie aplikacji zdalnie}
+        
         \subsubsection{Instrukcja uruchomienia testów}
+        
     \subsection{Desktop}
         \subsubsection{Postawienie aplikacji lokalnie}
+        \begin{enumerate}
+            \item Clone the github repository\\
+                        \emph{git clone https://github.com/Price-Tracker-ZMP/Desktop/} \\
+            \item Open the project and install NPM\\
+              \emph{npm install} \\
+            \item Run the application with:\\
+                \emph{npm start} \\
+        \end{enumerate}
+   
         \subsubsection{Postawienie aplikacji zdalnie}
+        
         \subsubsection{Instrukcja uruchomienia testów}
+        
     \subsection{Mobile}
         \subsubsection{Postawienie aplikacji lokalnie}
+         \begin{enumerate}
+            \item Install Visual Studio\\
+            \item Install Visual Studio Extension for Xamarin\\
+                \includegraphics{mobile_step_2}\\
+            \item Clone repository\\
+            \href{https://github.com/Price-Tracker-ZMP/Mobile.git}{Git repository}\\
+            \item Open project (install additionals if neccessary)\\
+                \includegraphics{mobile_step_4}\\
+            \item Start project (during first start, install Android emulator and default device)\\
+                \includegraphics{mobile_step_5}\\
+        \end{enumerate}
+       
         \subsubsection{Postawienie aplikacji zdalnie}
+        
         \subsubsection{Instrukcja uruchomienia testów}
 
+\section{Schematy i diagramy}
 
+\section{Repozytorium}
+Link do naszej organizacji: \\
+\url{https://github.com/Price-Tracker-ZMP}\\\\
+
+\section{Wnioski}
 
 \end{document}
