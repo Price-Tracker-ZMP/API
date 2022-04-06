@@ -10,6 +10,8 @@ const User = require('./models/User.js');
 const addGameRoutes = require('./routes/addGame.js');
 const Game = require('./models/Game.js');
 
+const getSteamGamesList = require('./routes/getSteamGamesList.js');
+
 const responseStandard = require('./controller.js');
 
 //TODO: main, test routes to do - for testing main connection with database and testing with Postman
@@ -19,6 +21,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/auth', authRoute);
 app.use('/add-game', addGameRoutes);
+app.use('/get-steam-games-list', getSteamGamesList);
 
 //ROUTES
 app.get('/', async (request, response) => {
