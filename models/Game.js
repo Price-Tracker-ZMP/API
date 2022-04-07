@@ -1,18 +1,23 @@
 const mongoose = require('mongoose');
 
 const GameSchema = new mongoose.Schema({
-	gameName: {
+	name: {
 		type: String,
 		required: true,
 	},
 	steam_appid: {
-		type: String,
+		type: Number,
 	},
 	currency: {
 		type: String,
 	},
-	price: {
-		type: String,
+	priceInitial: {
+		type: Number,
+		lowercase: true,
+		default: 0.0,
+	},
+	priceFinal: {
+		type: Number,
 		lowercase: true,
 		default: 0.0,
 	},
