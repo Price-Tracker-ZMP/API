@@ -10,7 +10,7 @@ const responseStandard = require('../controller.js');
 
 router.post('/by-name', async (request, response) => {
 	console.log('-----------------------------------');
-	console.log("Got 'add-game' order: ", request.body);
+	console.log("Got 'add-game/by-name' order: ", request.body);
 
 	const { error } = addingGameValidation(request.body);
 	if (error) {
@@ -98,7 +98,8 @@ router.post('/by-name', async (request, response) => {
 });
 
 router.post('/by-link', async (request, response) => {
-	console.log('request.body', request.body);
+	console.log('-----------------------------------');
+	console.log("Got 'add-game/by-link' order: ", request.body);
 	const token = request.body.token;
 	const link = request.body.link.toString();
 
@@ -117,7 +118,6 @@ router.post('/by-link', async (request, response) => {
 		.filter(element => element !== '')
 		.at(-2);
 
-	//find the game
 	const steamUrlSchema =
 		'https://store.steampowered.com/api/appdetails?appids=';
 
@@ -137,13 +137,11 @@ router.post('/by-link', async (request, response) => {
 		steam_appid: steam_appid,
 	});
 
-	//jezeli gra jest w bazie
 	if (isGameInDB) {
 		const gameInDB = await Game.findOne({ steam_appid: steam_appid });
-		console.log('gameInDB ', gameInDB);
 
 		const hasUserHasThisGame = userFromToken.gamesList.find(
-			element => element === gameInDB._id
+			element => element.valueOf() === gameInDB._id.valueOf()
 		);
 
 		if (hasUserHasThisGame) {
@@ -156,7 +154,7 @@ router.post('/by-link', async (request, response) => {
 			return response.json(responseStandard(true, 'Game Added'));
 		}
 	}
-	//jezeli gry nie ma w bazie
+
 	if (!isGameInDB) {
 		const newGame = new Game({
 			name: name,
@@ -166,7 +164,6 @@ router.post('/by-link', async (request, response) => {
 			priceFinal: final,
 			discountPercent: discount_percent,
 		});
-		console.log('new game', newGame);
 		try {
 			newGame.save();
 			userFromToken.gamesList.push(newGame._id);
