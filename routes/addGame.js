@@ -41,8 +41,6 @@ router.post('/by-name', async (request, response) => {
 	});
 
 	if (isGameFromRequestExistInDB) {
-		console.log('Gra istnieje w DB');
-		console.log(isGameFromRequestExistInDB);
 		var gameID = isGameFromRequestExistInDB._id; //id dokumentu z bd gry
 
 		const isUserHasThatGame = await User.findOne({
@@ -72,8 +70,7 @@ router.post('/by-name', async (request, response) => {
 			steamUrl + request.body.gameId
 		).then(res => res.json());
 
-		if (gameResponseFromSteam[request.body.gameId]) {
-			console.log(gameResponseFromSteam[request.body.gameId].data);
+		if (!gameResponseFromSteam[request.body.gameId].success) {
 			return response.json(responseStandard(false, 'appid error'));
 		}
 
@@ -86,6 +83,7 @@ router.post('/by-name', async (request, response) => {
 			currency: price_overview.currency,
 			priceInitial: price_overview.initial,
 			priceFinal: price_overview.final,
+			discountPercent: price_overview.discount_percent,
 		});
 
 		try {

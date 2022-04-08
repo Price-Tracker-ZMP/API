@@ -13,12 +13,14 @@ const GameSchema = new mongoose.Schema({
 	},
 	priceInitial: {
 		type: Number,
-		lowercase: true,
 		default: 0.0,
 	},
 	priceFinal: {
 		type: Number,
-		lowercase: true,
+		default: 0.0,
+	},
+	discountPercent: {
+		type: Number,
 		default: 0.0,
 	},
 });
