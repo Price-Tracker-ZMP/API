@@ -64,10 +64,11 @@ router.post('/by-name', async (request, response) => {
 	}
 
 	if (!isGameFromRequestExistInDB) {
-		const steamUrl = 'https://store.steampowered.com/api/appdetails?appids=';
+		const steamUrl =
+			'https://store.steampowered.com/api/appdetails?appids={app_id}&cc=pl';
 
 		const gameResponseFromSteam = await fetch(
-			steamUrl + request.body.gameId
+			steamUrl.replace('{app_id}', request.body.gameId)
 		).then(res => res.json());
 
 		if (!gameResponseFromSteam[request.body.gameId].success) {
@@ -119,11 +120,11 @@ router.post('/by-link', async (request, response) => {
 		.at(-2);
 
 	const steamUrlSchema =
-		'https://store.steampowered.com/api/appdetails?appids=';
+		'https://store.steampowered.com/api/appdetails?appids={app_id}&cc=pl';
 
-	const gameFromSteam = await fetch(steamUrlSchema + gameNumber).then(res =>
-		res.json()
-	);
+	const gameFromSteam = await fetch(
+		steamUrlSchema.replace('{app_id}', gameNumber)
+	).then(res => res.json());
 	const name = gameFromSteam[gameNumber].data.name;
 	const steam_appid = gameFromSteam[gameNumber].data.steam_appid;
 	const currency = gameFromSteam[gameNumber].data.price_overview.currency;
