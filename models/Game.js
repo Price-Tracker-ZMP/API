@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const PriceHistory = require('../models/PriceHistory.js');
 
 const GameSchema = new mongoose.Schema({
 	name: {
@@ -25,7 +26,32 @@ const GameSchema = new mongoose.Schema({
 	},
 });
 
-//TODO: make PRE middleware which will take current price of the game
-// GameSchema.pre("save", function(){})
+GameSchema.pre('save', async function (req, res, next) {
+	const gamesPriceHistory = await PriceHistory.findOne({
+		steam_appid: this.steam_appid,
+	});
+	const date = new Date();
+	if (!gamesPriceHistory) {
+		const newPriceHistory = new PriceHistory({
+			steam_appid: this.steam_appid,
+			priceInitial: this.priceInitial,
+			dateInitial: date,
+			priceFinal: this.priceFinal,
+			dateFinal: date,
+		});
+		await newPriceHistory.save();
+	}
+	if (gamesPriceHistory) {
+		if (gamesPriceHistory.priceInitial !== this.priceInitial) {
+			gamesPriceHistory.priceInitial.push(this.priceInitial);
+			gamesPriceHistory.dateInitial.push(date);
+		}
+		if (gamesPriceHistory.priceFinal !== this.priceFinal) {
+			gamesPriceHistory.priceFinal.push(this.priceFinal);
+			gamesPriceHistory.dateFinal.push(date);
+		}
+		await gamesPriceHistory.save();
+	}
+});
 
 module.exports = mongoose.model('Game', GameSchema);
