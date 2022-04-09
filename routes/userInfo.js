@@ -27,4 +27,9 @@ router.get('/user-email', async (req, res) => {
 	}
 });
 
+router.get('/user-games', async (req, res) => {
+	console.log('----------------------------------------------');
+	console.log('Get request: ', req.body);
+});
+
 module.exports = router;
