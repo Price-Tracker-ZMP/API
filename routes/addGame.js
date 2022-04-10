@@ -8,7 +8,7 @@ const Game = require('../models/Game.js');
 const { addingGameValidation } = require('../validation/gameValidation.js');
 const responseStandard = require('../controller.js');
 
-router.post('/by-name', async (request, response) => {
+router.post('/by-id', async (request, response) => {
 	console.log('-----------------------------------');
 	console.log("Got 'add-game/by-name' order: ", request.body);
 
