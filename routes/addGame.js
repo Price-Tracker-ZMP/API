@@ -5,14 +5,19 @@ const fetch = require('node-fetch');
 const User = require('../models/User.js');
 const Game = require('../models/Game.js');
 
-const { addingGameValidation } = require('../validation/gameValidation.js');
+const { addingGameByIdValidation } = require('../validation/gameValidation.js');
+
+const {
+	addingGameByLinkValidation,
+} = require('../validation/gameValidation.js');
+
 const responseStandard = require('../controller.js');
 
 router.post('/by-id', async (request, response) => {
 	console.log('-----------------------------------');
 	console.log("Got 'add-game/by-name' order: ", request.body);
 
-	const { error } = addingGameValidation(request.body);
+	const { error } = addingGameByIdValidation(request.body);
 	if (error) {
 		return response.json(responseStandard(false, error.details[0].message));
 	}
@@ -101,6 +106,12 @@ router.post('/by-id', async (request, response) => {
 router.post('/by-link', async (request, response) => {
 	console.log('-----------------------------------');
 	console.log("Got 'add-game/by-link' order: ", request.body);
+
+	const { error } = addingGameByLinkValidation(request.body);
+	if (error) {
+		return response.json(responseStandard(false, error.details[0].message));
+	}
+
 	const token = request.body.token;
 	const link = request.body.link.toString();
 

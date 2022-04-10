@@ -4,10 +4,19 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User.js');
 const Game = require('../models/Game.js');
 
+const { userEmailValidation } = require('../validation/userInfoValidation.js');
+
 const responseStandard = require('../controller.js');
-const { response } = require('express');
 
 router.get('/user-email', async (req, res) => {
+	console.log('----------------------------------------------');
+	console.log("Get request '/user-email': ", req.body);
+
+	const { error } = userEmailValidation(req.body);
+	if (error) {
+		return res.json(responseStandard(false, error.details[0].message));
+	}
+
 	const { _id } = jwt.verify(
 		req.body.token,
 		process.env.TOKEN_SECRET,
