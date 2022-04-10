@@ -2,8 +2,10 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User.js');
+const Game = require('../models/Game.js');
 
 const responseStandard = require('../controller.js');
+const { response } = require('express');
 
 router.get('/user-email', async (req, res) => {
 	const { _id } = jwt.verify(
@@ -11,7 +13,7 @@ router.get('/user-email', async (req, res) => {
 		process.env.TOKEN_SECRET,
 		(err, decode) => {
 			if (err) {
-				return res.json(responseStandard(false, 'Token Invalid - ', err));
+				return res.json(responseStandard(false, 'Token Invalid', err));
 			}
 			return decode;
 		}
@@ -24,6 +26,44 @@ router.get('/user-email', async (req, res) => {
 	}
 	if (!userById) {
 		return res.json(responseStandard(false, 'Something went wrong'));
+	}
+});
+
+router.get('/user-games', async (req, res) => {
+	console.log('----------------------------------------------');
+	console.log('Get request: ', req.body);
+
+	const { _id } = jwt.verify(
+		req.body.token,
+		process.env.TOKEN_SECRET,
+		(err, decode) => {
+			if (err) {
+				return res.json(responseStandard(false, 'Token Invalid', err));
+			}
+			return decode;
+		}
+	);
+	const userById = await User.findById(_id);
+	console.log(userById);
+
+	if (!userById) {
+		return res.json(
+			responseStandard(false, "User with that token doesn't exist")
+		);
+	}
+
+	if (userById) {
+		// console.log(userById.gamesList);
+		const gamesObjectIds = userById.gamesList.map(element => {
+			return element.valueOf();
+		});
+		const games = await Promise.all(
+			gamesObjectIds.map(async element => {
+				return await Game.findById(element);
+			})
+		);
+
+		res.json(responseStandard(true, "User's games", games));
 	}
 });
 

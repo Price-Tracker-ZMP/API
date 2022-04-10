@@ -24,7 +24,7 @@ app.use(cors());
 app.use('/auth', authRoute);
 app.use('/add-game', addGameRoutes);
 app.use('/get-steam-games-list', getSteamGamesList);
-app.use('/info', userInfo);
+app.use('/user-info', userInfo);
 
 //ROUTES
 app.get('/', async (request, response) => {
