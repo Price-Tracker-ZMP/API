@@ -11,25 +11,34 @@ router.get('/user-email', async (req, res) => {
 	console.log("Get request '/user-info/user-email': ", req.body);
 	console.log('header(authentication): ', req.header('authentication'));
 
-	const token = req.header('authentication');
-	if (!token) {
-		return res.json(responseStandard(false, "Token doesn't exist"));
-	}
-
-	const { _id } = jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
-		if (err) {
-			return res.json(responseStandard(false, 'Token Invalid', err));
+	try {
+		const token = req.header('authentication');
+		if (!token) {
+			throw "Token doesn't exist";
 		}
-		return decode;
-	});
-	const userById = await User.findById(_id);
-	if (userById) {
-		return res.json(
-			responseStandard(true, 'User Found', { email: userById.email })
+
+		const { _id } = jwt.verify(
+			token,
+			process.env.TOKEN_SECRET,
+			(err, decode) => {
+				if (err) {
+					throw 'Token Invalid';
+				}
+				return decode;
+			}
 		);
-	}
-	if (!userById) {
-		return res.json(responseStandard(false, 'Something went wrong'));
+		const userById = await User.findById(_id);
+		if (userById) {
+			return res.json(
+				responseStandard(true, 'User Found', { email: userById.email })
+			);
+		}
+		if (!userById) {
+			throw "User with that token doesn't exist";
+		}
+	} catch (err) {
+		console.log(err);
+		return res.json(responseStandard(false, err));
 	}
 });
 
