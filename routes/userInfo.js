@@ -47,37 +47,43 @@ router.get('/user-games', async (req, res) => {
 	console.log("Get request '/user-info/user-games': ", req.body);
 	console.log('header(authentication): ', req.header('authentication'));
 
-	const token = req.header('authentication');
-	if (!token) {
-		return res.json(responseStandard(false, "Token doesn't exist"));
-	}
-
-	const { _id } = jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
-		if (err) {
-			return res.json(responseStandard(false, 'Token Invalid', err));
+	try {
+		const token = req.header('authentication');
+		if (!token) {
+			throw "Token doesn't exist";
 		}
-		return decode;
-	});
-	const userById = await User.findById(_id);
-	console.log(userById);
 
-	if (!userById) {
-		return res.json(
-			responseStandard(false, "User with that token doesn't exist")
+		const { _id } = jwt.verify(
+			token,
+			process.env.TOKEN_SECRET,
+			(err, decode) => {
+				if (err) {
+					throw 'Token Invalid';
+				}
+				return decode;
+			}
 		);
-	}
+		const userById = await User.findById(_id);
+		console.log('User from ID', userById);
 
-	if (userById) {
-		const gamesObjectIds = userById.gamesList.map(element => {
-			return element.valueOf();
-		});
-		const games = await Promise.all(
-			gamesObjectIds.map(async element => {
-				return await Game.findById(element);
-			})
-		);
+		if (!userById) {
+			throw "User with that token doesn't exist";
+		}
 
-		res.json(responseStandard(true, "User's games", games));
+		if (userById) {
+			const gamesObjectIds = userById.gamesList.map(element => {
+				return element.valueOf();
+			});
+			const games = await Promise.all(
+				gamesObjectIds.map(async element => {
+					return await Game.findById(element);
+				})
+			);
+			res.json(responseStandard(true, "User's games", games));
+		}
+	} catch (err) {
+		console.log(err);
+		res.json(responseStandard(false, err));
 	}
 });
 
