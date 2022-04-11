@@ -4,15 +4,15 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const authRoute = require('./routes/auth.js');
+const authRoutes = require('./routes/auth.js');
 const User = require('./models/User.js');
 
 const addGameRoutes = require('./routes/addGame.js');
 const Game = require('./models/Game.js');
 
 const getSteamGamesList = require('./routes/getSteamGamesList.js');
-
-const userInfo = require('./routes/userInfo.js');
+const userInfoRoutes = require('./routes/userInfo.js');
+const gameDelete = require('./routes/gameDelete.js');
 
 const responseStandard = require('./controller.js');
 
@@ -21,10 +21,11 @@ const responseStandard = require('./controller.js');
 //MIDDLEWARES!!!
 app.use(express.json());
 app.use(cors());
-app.use('/auth', authRoute);
+app.use('/auth', authRoutes);
 app.use('/add-game', addGameRoutes);
 app.use('/get-steam-games-list', getSteamGamesList);
-app.use('/user-info', userInfo);
+app.use('/user-info', userInfoRoutes);
+app.use('/delete', gameDelete);
 
 //ROUTES
 app.get('/', async (request, response) => {
