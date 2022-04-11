@@ -4,29 +4,24 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User.js');
 const Game = require('../models/Game.js');
 
-const { userEmailValidation } = require('../validation/userInfoValidation.js');
-
 const responseStandard = require('../controller.js');
 
 router.get('/user-email', async (req, res) => {
 	console.log('----------------------------------------------');
-	console.log("Get request '/user-email': ", req.body);
+	console.log("Get request '/user-info/user-email': ", req.body);
+	console.log('header(authentication): ', req.header('authentication'));
 
-	const { error } = userEmailValidation(req.body);
-	if (error) {
-		return res.json(responseStandard(false, error.details[0].message));
+	const token = req.header('authentication');
+	if (!token) {
+		return res.json(responseStandard(false, "Token doesn't exist"));
 	}
 
-	const { _id } = jwt.verify(
-		req.body.token,
-		process.env.TOKEN_SECRET,
-		(err, decode) => {
-			if (err) {
-				return res.json(responseStandard(false, 'Token Invalid', err));
-			}
-			return decode;
+	const { _id } = jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
+		if (err) {
+			return res.json(responseStandard(false, 'Token Invalid', err));
 		}
-	);
+		return decode;
+	});
 	const userById = await User.findById(_id);
 	if (userById) {
 		return res.json(
@@ -40,18 +35,20 @@ router.get('/user-email', async (req, res) => {
 
 router.get('/user-games', async (req, res) => {
 	console.log('----------------------------------------------');
-	console.log('Get request: ', req.body);
+	console.log("Get request '/user-info/user-games': ", req.body);
+	console.log('header(authentication): ', req.header('authentication'));
 
-	const { _id } = jwt.verify(
-		req.body.token,
-		process.env.TOKEN_SECRET,
-		(err, decode) => {
-			if (err) {
-				return res.json(responseStandard(false, 'Token Invalid', err));
-			}
-			return decode;
+	const token = req.header('authentication');
+	if (!token) {
+		return res.json(responseStandard(false, "Token doesn't exist"));
+	}
+
+	const { _id } = jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
+		if (err) {
+			return res.json(responseStandard(false, 'Token Invalid', err));
 		}
-	);
+		return decode;
+	});
 	const userById = await User.findById(_id);
 	console.log(userById);
 
@@ -62,7 +59,6 @@ router.get('/user-games', async (req, res) => {
 	}
 
 	if (userById) {
-		// console.log(userById.gamesList);
 		const gamesObjectIds = userById.gamesList.map(element => {
 			return element.valueOf();
 		});

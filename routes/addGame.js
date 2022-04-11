@@ -16,6 +16,7 @@ const responseStandard = require('../controller.js');
 router.post('/by-id', async (request, response) => {
 	console.log('-----------------------------------');
 	console.log("Got 'add-game/by-name' order: ", request.body);
+	console.log("header - 'authentication': ", request.header('authentication'));
 
 	const { error } = addingGameByIdValidation(request.body);
 	if (error) {
@@ -23,11 +24,11 @@ router.post('/by-id', async (request, response) => {
 	}
 
 	const decode = await jwt.verify(
-		request.body.token,
+		request.header('authentication'),
 		process.env.TOKEN_SECRET,
 		(err, decode) => {
 			if (err) {
-				return response.json(responseStandard(false, 'Unvalid Token'));
+				return response.json(responseStandard(false, 'Invalid Token'));
 			}
 			if (!err) {
 				return decode;
@@ -40,13 +41,12 @@ router.post('/by-id', async (request, response) => {
 		return response.json(responseStandard(false, "User doesn't exists"));
 	}
 
-	//sprawdzenie, czy gra o podanym id juz istnieje w db
-	const isGameFromRequestExistInDB = await Game.findOne({
+	const isGameFromRequestInDB = await Game.findOne({
 		steam_appid: request.body.gameId,
 	});
 
-	if (isGameFromRequestExistInDB) {
-		var gameID = isGameFromRequestExistInDB._id; //id dokumentu z bd gry
+	if (isGameFromRequestInDB) {
+		var gameID = isGameFromRequestInDB._id;
 
 		const isUserHasThatGame = await User.findOne({
 			_id: userFromToken._id,
@@ -68,7 +68,7 @@ router.post('/by-id', async (request, response) => {
 		}
 	}
 
-	if (!isGameFromRequestExistInDB) {
+	if (!isGameFromRequestInDB) {
 		const steamUrl =
 			'https://store.steampowered.com/api/appdetails?appids={app_id}&cc=pl';
 
@@ -106,13 +106,14 @@ router.post('/by-id', async (request, response) => {
 router.post('/by-link', async (request, response) => {
 	console.log('-----------------------------------');
 	console.log("Got 'add-game/by-link' order: ", request.body);
+	console.log("header - 'authentication': ", request.header('authentication'));
 
 	const { error } = addingGameByLinkValidation(request.body);
 	if (error) {
 		return response.json(responseStandard(false, error.details[0].message));
 	}
 
-	const token = request.body.token;
+	const token = request.header('authentication');
 	const link = request.body.link.toString();
 
 	const { _id } = jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
