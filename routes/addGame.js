@@ -23,7 +23,7 @@ router.post('/by-id', async (request, response) => {
 		return response.json(responseStandard(false, error.details[0].message));
 	}
 
-	const decode = await jwt.verify(
+	const decode = jwt.verify(
 		request.header('authentication'),
 		process.env.TOKEN_SECRET,
 		(err, decode) => {
