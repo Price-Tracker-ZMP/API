@@ -13,6 +13,7 @@ const Game = require('./models/Game.js');
 const getSteamGamesList = require('./routes/getSteamGamesList.js');
 const userInfoRoutes = require('./routes/userInfo.js');
 const gameDelete = require('./routes/gameDelete.js');
+const basicGets = require('./routes/basicGetters.js');
 
 const responseStandard = require('./controller.js');
 
@@ -26,6 +27,7 @@ app.use('/add-game', addGameRoutes);
 app.use('/get-steam-games-list', getSteamGamesList);
 app.use('/user-info', userInfoRoutes);
 app.use('/delete', gameDelete);
+app.use('/get', basicGets);
 
 //ROUTES
 app.get('/', async (request, response) => {
