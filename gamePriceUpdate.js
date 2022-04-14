@@ -8,9 +8,6 @@ const updateGamesPrices = async () => {
 	const allGamesInDB = await Game.find({});
 	try {
 		allGamesInDB.forEach(async game => {
-			// console.log(game.name);
-			// console.log(game.steam_appid);
-
 			const steamData = await fetch(
 				urlSchema.replace('{app_id}', game.steam_appid)
 			).then(res => res.json());
