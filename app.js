@@ -17,6 +17,8 @@ const basicGets = require('./routes/basicGetters.js');
 
 const responseStandard = require('./controller.js');
 
+const gamesPricesUpdate = require('./gamePriceUpdate.js');
+
 //TODO: main, test routes to do - for testing main connection with database and testing with Postman
 
 //MIDDLEWARES!!!
@@ -47,9 +49,16 @@ mongoose.connect(process.env.DB_CONNECTION, () => {
 	console.log('Database connected');
 });
 
-//TODO: not-static port listening
 //LISTENING
 const PORT = process.env.PORT || 5001;
 app.listen(process.env.PORT, () => {
 	console.log(`Server is running at port ${process.env.PORT}`);
 });
+
+setInterval(() => {
+	var date = new Date();
+	console.log(date);
+	if (date.getHours() == 12) {
+		gamesPricesUpdate();
+	}
+}, 45000);
