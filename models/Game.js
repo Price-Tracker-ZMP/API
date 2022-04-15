@@ -11,6 +11,7 @@ const GameSchema = new mongoose.Schema({
 	},
 	currency: {
 		type: String,
+		default: 'none',
 	},
 	priceInitial: {
 		type: Number,

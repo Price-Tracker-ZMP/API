@@ -150,13 +150,10 @@ router.post('/by-link', async (request, response) => {
 			steamUrlSchema.replace('{app_id}', gameNumber)
 		).then(res => res.json());
 
+		console.log('gameFromSteam ', gameFromSteam);
+
 		let name = gameFromSteam[gameNumber].data.name;
 		let steam_appid = gameFromSteam[gameNumber].data.steam_appid;
-		let currency = gameFromSteam[gameNumber].data.price_overview.currency;
-		let initial = gameFromSteam[gameNumber].data.price_overview.initial;
-		let final = gameFromSteam[gameNumber].data.price_overview.final;
-		let discount_percent =
-			gameFromSteam[gameNumber].data.price_overview.discount_percent;
 
 		const isGameInDB = await Game.findOne({
 			name: name,
@@ -182,20 +179,43 @@ router.post('/by-link', async (request, response) => {
 		}
 
 		if (!isGameInDB) {
-			const newGame = new Game({
-				name: name,
-				steam_appid: steam_appid,
-				currency: currency,
-				priceInitial: initial,
-				priceFinal: final,
-				discountPercent: discount_percent,
-			});
-			newGame.save();
-			userFromToken.gamesList.push(newGame._id);
-			userFromToken.save();
-			return response.json(responseStandard(true, 'Game Added'));
+			if (!gameFromSteam[gameNumber].data.is_free) {
+				let currency = gameFromSteam[gameNumber].data.price_overview.currency;
+				let initial = gameFromSteam[gameNumber].data.price_overview.initial;
+				let final = gameFromSteam[gameNumber].data.price_overview.final;
+				let discount_percent =
+					gameFromSteam[gameNumber].data.price_overview.discount_percent;
+
+				const newGame = new Game({
+					name: name,
+					steam_appid: steam_appid,
+					currency: currency,
+					priceInitial: initial,
+					priceFinal: final,
+					discountPercent: discount_percent,
+				});
+				newGame.save();
+				userFromToken.gamesList.push(newGame._id);
+				userFromToken.save();
+				return response.json(responseStandard(true, 'Game Added'));
+			}
+			if (gameFromSteam[gameNumber].data.is_free) {
+				const newGame = new Game({
+					name: name,
+					steam_appid: steam_appid,
+				});
+				newGame.save();
+				userFromToken.gamesList.push(newGame._id);
+				userFromToken.save();
+				return response.json(responseStandard(true, 'Game Added'));
+			}
+			// newGame.save();
+			// userFromToken.gamesList.push(newGame._id);
+			// userFromToken.save();
+			// return response.json(responseStandard(true, 'Game Added'));
 		}
 	} catch (err) {
+		console.log(err);
 		return response.json(responseStandard(false, err));
 	}
 });
