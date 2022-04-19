@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 const Game = require('./models/Game.js');
 
-const urlSchema =
-	'https://store.steampowered.com/api/appdetails?appids={app_id}&cc=pl';
+const urlSchema = 'https://store.steampowered.com/api/appdetails?appids={app_id}&cc=pl';
 
 const updateGamesPrices = async () => {
 	const allGamesInDB = await Game.find({});
@@ -17,15 +16,12 @@ const updateGamesPrices = async () => {
 
 			let steamPriceInitial =
 				steamData[game.steam_appid].data.price_overview.initial;
-			let steamPriceFinal =
-				steamData[game.steam_appid].data.price_overview.final;
-			let steamDiscountPercent =
-				steamData[game.steam_appid].data.price_overview.discount_percent;
+			let steamPriceFinal = steamData[game.steam_appid].data.price_overview.final;
 
 			game.priceInitial = steamPriceInitial;
 			game.priceFinal = steamPriceFinal;
 
-			console.log(game);
+			console.log("Game log in 'gamePriceUpdate' ", game);
 
 			await game.save();
 		});
