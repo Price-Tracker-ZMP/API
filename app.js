@@ -58,7 +58,7 @@ app.listen(process.env.PORT, () => {
 setInterval(() => {
 	var date = new Date();
 	console.log(date);
-	if (date.getHours() == 12 || date.getMinutes() == 30) {
+	if (date.getHours() == 12 && date.getMinutes() == 30) {
 		gamesPricesUpdate();
 	}
 }, 45000);
