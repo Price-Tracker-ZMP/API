@@ -148,6 +148,27 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         \end{enumerate}
         
         \subsubsection{Postawienie aplikacji zdalnie}
+        Na maszynie (serwerze) z zainstalowanymi pakietami:\\
+        \begin{enumerate}
+            \item nodejs\\
+            \item pm2\\
+            \item git\\
+            \item nginx\\
+        \end{enumerate}
+        Z pomocą połącznienia ssh.\\
+        
+        \begin{enumerate}
+            \item Clone the github repository\\
+                \emph{git clone git@github.com:Price-Tracker-ZMP/API.git} \\
+            \item Open the project and install NPM\\
+              \emph{npm install} \\
+            \item Run the application with:\\
+                \emph{pm2 start api.js} \\
+            \item Change port on file:\\
+                \emph{sudo nano /etc/nginx/sides-enabled/default} \\
+            \item Reload file\\
+                \emph{sudo /etc/init.d/nginx reload} \\
+        \end{enumerate}
         
         \subsubsection{Instrukcja uruchomienia testów}
         
@@ -163,6 +184,15 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         \end{enumerate}
         
         \subsubsection{Postawienie aplikacji zdalnie}
+         \begin{enumerate}
+            \item Wchodzimy na strone vercel.com\\
+            \item Logujemy się z pomoca github\\
+            \item Importujemy dane repozytorium z aplikacją nazwyając ją\\
+            \item Ustawiamy framework na react app i klikamy deploy\\
+            \item Czekamy za zbudowanie\\
+            \item Strona dostępna w internecie dod domeną "nazwa-projektu".vercel.com\\
+        \end{enumerate}
+        
         
         \subsubsection{Instrukcja uruchomienia testów}
         
@@ -178,8 +208,19 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         \end{enumerate}
    
         \subsubsection{Postawienie aplikacji użytkownik}
+        \begin{enumerate}
+            \item Kliknij drukrotnie w instalkę\\
+                \includegraphics{ikona desktop.PNG}\\
+            \item Animacja instalacji\\
+                \includegraphics{CNQB8fV.png}\\
+            \item Aplikacja gotowa do użytku\\
+        \end{enumerate}
         
         \subsubsection{Instrukcja uruchomienia testów}
+        \begin{enumerate}
+            \item Testy uruchamia w terminalu\\
+            \emph{npm run tests} \\
+        \end{enumerate}
         
     \subsection{Mobile}
         \subsubsection{Postawienie aplikacji deweloper}
@@ -196,15 +237,47 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         \end{enumerate}
        
         \subsubsection{Postawienie aplikacji użytkownik}
-        
+            \begin{enumerate}
+            \item  Wejdź na sklep play.\\
+            \item Znajdź aplikację pod nazwą PriceTracker lub wejdź w link\\ \href{https://play.google.com/store/apps/details?id=com.merfeusz.pricetrackermobile}{https://play.google.com/store/apps/details?id=com.merfeusz.pricetrackermobile}\\
+            \item  Kliknij zainstaluj\\
+        \end{enumerate}
+      
         \subsubsection{Instrukcja uruchomienia testów}
+             \begin{enumerate}
+                \item Dodaj zmienne środowiskowe (ANDROID HOME i JAVA HOME)" potrzebne do uruchomienia testów.\\
+                    \includegraphics{images/1unknown.png}\\
+                \item Zainstaluj NDK.\\
+                    \includegraphics{images/2unknown.png}\\
+                \item Skonfiguruj package name aplikacji dla inicjatora.\\
+                    \includegraphics{images/3unknown.png}\\
+                \item Uruchom projekt na emulatorze, aby mieć pewność, że aplikacja jest zainstalowana.\\
+                \item Uruchom testy w zakładce Test Explorer.\\
+                Propane zdane testy\\
+                    \includegraphics{images/5unknown.png}\\
+        \end{enumerate}
 
 \section{Schematy i diagramy}
-
+    \includegraphics{images/baza danych.PNG}\\
+    
 \section{Repozytorium}
 Link do naszej organizacji: \\
 \url{https://github.com/Price-Tracker-ZMP}\\\\
 
 \section{Wnioski}
+   Projekt ten nie był aż tak prostym przedsięwzięciem jak zakładaliśmy na starcie. Jednak ucząc się po drodze udało się nam go ukończyć. Nigdy wcześniej część naszego zespołu nie korzystała z jawa skryptu i innych wyczytanych technologii, co także utrudniło pracę. Więc musieliśmy pomagać sobie, a najbardziej osobom, które nie były zaznajomione z ów językiem, aby poprawnie utworzyć naszą aplikację.\\
+    Poza techniczną stroną projektu musieliśmy się też zmierzyć z trudność zarządzania czasem z powodu natłoku innych sytuacji losowych i pracy zawodowej.\\
+    Ale miło to tez dobą stronę, ponieważ niektórzy członkowie naszego zespołu mieli już styczność z wykorzystywanymi technologiami w życiu zawodowym.\\
+    Musiała to być praca wspólna, aby osiągnąć nasz cel końcowy.\\
+    
+    Wynieśliśmy z tego następujące wnioski:\\
+    \begin{itemize}
+        \item Przygotowanie aplikacji wymaga wiedzy poza czystą wiedzą techniczną.
+        \item Warto posiadać członków zespołu, którzy posiadają głęboką wiedzę w danym zakresie.
+        \item Organizacja grupy może być wymagająca, gdy niektórzy członkowie są osobami pracującymi.
+        \item Flow pracy może łatwo być przerwany w wypadku chorób i różnych prywatnych spraw w zespole.
+        \item Nie należy być zbyt optymistycznym w przypadku planowania czasu pracy.
+    \end{itemize}
+
 
 \end{document}
