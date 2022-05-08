@@ -119,11 +119,16 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
 
 \section{Wzorce projektowe}
     \subsection{API}
-       
-        
+       \begin{itemize}
+           \item Circuit Breaker\\
+             Wzorzec Circuit Breaker, zapewnia sposób na wykrycie popsutej zależności i zatrzymuje przepływ danych i pozwala uniknąć opóźnień i okropnego UX.
+Wykozystujemy ten wzorzec do komunikacji z serwisami wewnętrznymi.
+            \end{itemize}   
     \subsection{Web}
-        
-        
+  \begin{itemize}
+           \item Singleton\\
+             Singleton jest wzorcem, który pozwala na stworzenie tylko jednej instancji obiektu z klasy bądź konstruktora funkcyjnego.  W przypadku wielokrotnego wywoływania tej samej klasy zawsze będziemy otrzymywali tą samą instancję, która została stworzona podczas pierwszego wywołania. 
+            \end{itemize}     
     \subsection{Desktop}
     \begin{itemize}
            \item Budowniczy\\
@@ -171,7 +176,10 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         \end{enumerate}
         
         \subsubsection{Instrukcja uruchomienia testów}
-        
+         \begin{enumerate}
+            \item Testy uruchamia w terminalu\\
+            \emph{npm run tests} \\
+        \end{enumerate}
     \subsection{Web}
         \subsubsection{Postawienie aplikacji lokalnie}
         \begin{enumerate}
@@ -195,7 +203,10 @@ Celem projektu jest stworzenie aplikację do obserwowania cen produktów w sklep
         
         
         \subsubsection{Instrukcja uruchomienia testów}
-        
+         \begin{enumerate}
+            \item Testy uruchamia w terminalu\\
+            \emph{npm run tests} \\
+        \end{enumerate}
     \subsection{Desktop}
         \subsubsection{Postawienie aplikacji deweloper}
         \begin{enumerate}
